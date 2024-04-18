@@ -3,23 +3,26 @@ import psycopg2
 from datetime import datetime
 
 class registration():
-    # SAVE THE DB CONFIG IN A DICT OBJECT 
-    DATABASE_CONFIG = { 
-        "database": "ecommerce", 
-        "user": "ecom_user", 
-        "password": "zPFJ6Pl25lZAzyE7jMytDIWUcpmqr5Ul", 
-        "host": "e-commerce.c3m660qam72y.us-east-1.rds.amazonaws.com", 
-        "port":  5432, 
-    } 
+    # SAVE THE DB CONFIG IN A DICT OBJECT
+    def __init__(self):
 
-    # def get_connection(self):
-    # Connect to your postgres DB
-    # return 
-    conn=psycopg2.connect(dbname=DATABASE_CONFIG.get('database') ,
-                            user=DATABASE_CONFIG.get('user'),
-                            password=DATABASE_CONFIG.get('password'),
-                            host=DATABASE_CONFIG.get('host'), 
-                            port=DATABASE_CONFIG.get('port')) 
+
+        self.DATABASE_CONFIG = { 
+            "database": "ecommerce", 
+            "user": "ecom_user", 
+            "password": "zPFJ6Pl25lZAzyE7jMytDIWUcpmqr5Ul", 
+            "host": "e-commerce.c3m660qam72y.us-east-1.rds.amazonaws.com", 
+            "port":  5432, 
+        } 
+
+        # def get_connection(self):
+        # Connect to your postgres DB
+        # return 
+        self.conn=psycopg2.connect(dbname=self.DATABASE_CONFIG.get('database') ,
+                                user=self.DATABASE_CONFIG.get('user'),
+                                password=self.DATABASE_CONFIG.get('password'),
+                                host=self.DATABASE_CONFIG.get('host'), 
+                                port=self.DATABASE_CONFIG.get('port')) 
 
     def insert_customer(self,dicobj):
         curr =self.conn.cursor()
@@ -35,7 +38,7 @@ class registration():
                 ('{dicobj.get('first_name')}','{dicobj.get('last_name')}',
                 '{dicobj.get('email_id')}',
                 '{dicobj.get('phone')}','{dicobj.get('city')}',
-                '{dicobj.get('postacode')}','{dicobj.get('province')}'
+                '{dicobj.get('postalcode')}','{dicobj.get('province')}'
                 ) 
         ''') 
         if curr.statusmessage is None:
@@ -70,7 +73,6 @@ class registration():
         
         return msg
 
-# def main():
-#     Cust_registration = registration()
+
     
-# main()
+
