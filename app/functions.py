@@ -24,7 +24,7 @@ class registration():
                                 password=self.DATABASE_CONFIG.get('password'),
                                 host=self.DATABASE_CONFIG.get('host'), 
                                 port=self.DATABASE_CONFIG.get('port')) 
-        self.client = boto3.client('sns')
+        self.client = boto3.client('sns',region_name='us-east-1')
 
     def insert_customer(self,dicobj):
         curr =self.conn.cursor()
@@ -51,10 +51,11 @@ class registration():
         # COMMIT THE ABOVE REQUESTS 
         self.conn.commit() 
     
+        self.publish_to_sns(self,dicobj.get('email_id'))
         # CLOSE THE CONNECTION 
         self.conn.close()
 
-        self.publish_to_sns(self,dicobj.get('email_id'))
+        
         return msg
 
     def verify_registration(self,email_ID):
