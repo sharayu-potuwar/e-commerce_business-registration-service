@@ -1,5 +1,6 @@
 import json
 import psycopg2
+import boto3
 from datetime import datetime
 
 class registration():
@@ -23,6 +24,7 @@ class registration():
                                 password=self.DATABASE_CONFIG.get('password'),
                                 host=self.DATABASE_CONFIG.get('host'), 
                                 port=self.DATABASE_CONFIG.get('port')) 
+        self.client = boto3.client('sns')
 
     def insert_customer(self,dicobj):
         curr =self.conn.cursor()
@@ -52,6 +54,7 @@ class registration():
         # CLOSE THE CONNECTION 
         self.conn.close()
 
+        self.publish_to_sns(self,dicobj.get('email_id'))
         return msg
 
     def verify_registration(self,email_ID):
@@ -73,6 +76,9 @@ class registration():
         
         return msg
 
-
+    def publish_to_sns(self,email_ID):
+       response = self.client.publish(TopicArn='arn:aws:sns:us-east-1:211125373436:ecom-user-updates-topic',Message="Test message")
+       print("Message published")
+       return(response)
     
 
