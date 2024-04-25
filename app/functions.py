@@ -51,7 +51,7 @@ class registration():
         # COMMIT THE ABOVE REQUESTS 
         self.conn.commit() 
     
-        self.publish_to_sns(self,dicobj.get('email_id'))
+        self.publish_to_sns(dicobj.get('email_id'))
         # CLOSE THE CONNECTION 
         self.conn.close()
 
@@ -80,6 +80,6 @@ class registration():
     def publish_to_sns(self,email_ID):
        response = self.client.publish(TopicArn='arn:aws:sns:us-east-1:211125373436:ecom-user-updates-topic',Message="Test message")
        print("Message published")
-       return(response)
+       return response
     
 
