@@ -91,7 +91,7 @@ class registration:
         print("Message published")
         return response
 
-    def get_secret():
+    def get_secret(self):
 
         secret_name = "ecom_secretmanager"
         region_name = "us-east-1"
