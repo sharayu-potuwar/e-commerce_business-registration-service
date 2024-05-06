@@ -3,12 +3,13 @@ import psycopg2
 import boto3
 from datetime import datetime
 from botocore.exceptions import ClientError
+import logging
 
 
 class registration:
     # SAVE THE DB CONFIG IN A DICT OBJECT
     def __init__(self):
-
+        self.logger = logging.getLogger(__name__)
         self.DATABASE_CONFIG = {
             "database": "ecommerce",
             "user": "ecom_user",
@@ -30,6 +31,7 @@ class registration:
         self.client = boto3.client("sns", region_name="us-east-1")
 
     def insert_customer(self, dicobj):
+        self.logger.info("insert_customer begin.. ")
         curr = self.conn.cursor()
 
         # EXECUTE THE INSERT QUERY
@@ -63,6 +65,7 @@ class registration:
         return msg
 
     def verify_registration(self, email_ID):
+        self.logger.info("verify_registration begin.. ")
         curr = self.conn.cursor()
         curr.execute(
             """
@@ -84,6 +87,7 @@ class registration:
         return msg
 
     def publish_to_sns(self, email_ID):
+        self.logger.info("publish_to_sns begin.. ")
         response = self.client.publish(
             TopicArn="arn:aws:sns:us-east-1:211125373436:ecom-user-updates-topic",
             Message="Test message",
