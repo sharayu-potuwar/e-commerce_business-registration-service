@@ -34,8 +34,8 @@ phases:
             - printf '[{"name":"ecom_app","imageUri":"%s"}]' $REPOSITORY_URI/$IMAGE_NAME:$IMAGE_TAG > imagedefinitions.json
             - printf '{"ImageURI":"%s"}' $REPOSITORY_URI/$IMAGE_NAME:$IMAGE_TAG > imageDetail.json
     artifacts:
-    files:
-      - imagedefinitions.json
-      - imageDetail.json
-      - appspec.yaml
-      - taskdef-prod.json
+        files:
+            - imagedefinitions.json
+            - imageDetail.json
+            - appspec.yaml
+            - taskdef-prod.json
