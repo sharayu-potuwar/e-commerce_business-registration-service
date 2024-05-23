@@ -97,7 +97,7 @@ class registration:
 
     def get_secret(self):
 
-        secret_name = "ecom_secretmanager"
+        secret_name = "dev_ecom_secretmanager"
         region_name = "us-east-1"
 
         # Create a Secrets Manager client
