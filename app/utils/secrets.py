@@ -8,9 +8,6 @@ class Secret():
 
     def get_secret(self, secret_name):
 
-            print("current role is:")
-            print(boto3.client("sts").get_caller_identity().get("Arn"))
-
             secret_name = secret_name
             region_name = "us-east-1"
 
