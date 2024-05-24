@@ -3,7 +3,7 @@ Resources:
   - TargetService:
       Type: AWS::ECS::Service
       Properties:
-        TaskDefinition: <TASK_DEFINITION>
+        TaskDefinition: arn:aws:ecs:us-east-1:211125373436:task-definition/service:10
         LoadBalancerInfo:
           ContainerName: "ecom_container"
           ContainerPort: 8001
@@ -14,9 +14,3 @@ Resources:
               Subnets: ["subnet-005a5c83ac0837b4f", "subnet-0e82b9017f47c921a"]
               SecurityGroups: ["sg-0070f32bfa40490c2"]
               AssignPublicIp: "ENABLED"
-# Hooks:
-# - BeforeInstall: "BeforeInstallHookFunctionName"
-# - AfterInstall: "AfterInstallHookFunctionName"
-# - AfterAllowTestTraffic: "AfterAllowTestTrafficHookFunctionName"
-# - BeforeAllowTraffic: "BeforeAllowTrafficHookFunctionName"
-# - AfterAllowTraffic: "AfterAllowTrafficHookFunctionName"

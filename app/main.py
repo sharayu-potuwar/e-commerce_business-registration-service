@@ -1,8 +1,4 @@
-from typing import Union
-
-from fastapi import FastAPI
-from fastapi import APIRouter
-
+from fastapi import APIRouter, FastAPI
 from pydantic import BaseModel
 
 from app.functions import registration
