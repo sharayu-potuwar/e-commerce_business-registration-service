@@ -1,9 +1,10 @@
 import json
-import psycopg2
-import boto3
-from datetime import datetime
-from botocore.exceptions import ClientError
 import logging
+from datetime import datetime
+
+import boto3
+import psycopg2
+from botocore.exceptions import ClientError
 
 
 class registration:
@@ -96,6 +97,9 @@ class registration:
         return response
 
     def get_secret(self):
+
+        print("current role is:")
+        print(boto3.client("sts").get_caller_identity().get("Arn"))
 
         secret_name = "dev_ecom_secretmanager"
         region_name = "us-east-1"
