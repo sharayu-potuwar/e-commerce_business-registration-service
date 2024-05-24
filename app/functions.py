@@ -5,7 +5,7 @@ from botocore.exceptions import ClientError
 from app.utils import secrets, sns
 from app.config import config
 
-secret = secrets.Secrets()
+secret = secrets.Secret()
 sns = sns.Sns()
 
 class registration:
