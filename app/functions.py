@@ -1,7 +1,4 @@
-import json
 import logging
-from datetime import datetime
-
 import boto3
 import psycopg2
 from botocore.exceptions import ClientError
@@ -19,9 +16,6 @@ class registration:
             "port": 5432,
         }
 
-        # def get_connection(self):
-        # Connect to your postgres DB
-        # return
         self.conn = psycopg2.connect(
             dbname=self.DATABASE_CONFIG.get("database"),
             user=self.DATABASE_CONFIG.get("user"),
@@ -37,18 +31,18 @@ class registration:
 
         # EXECUTE THE INSERT QUERY
         curr.execute(
-            f""" 
-            INSERT INTO 
+            f"""
+            INSERT INTO
                 customer.cust_registration(first_name,last_name,
                     email_id,
                     phone,
                     city,postacode,province)
-            VALUES 
+            VALUES
                 ('{dicobj.get('first_name')}','{dicobj.get('last_name')}',
                 '{dicobj.get('email_id')}',
                 '{dicobj.get('phone')}','{dicobj.get('city')}',
                 '{dicobj.get('postalcode')}','{dicobj.get('province')}'
-                ) 
+                )
         """
         )
         if curr.statusmessage is None:
@@ -70,8 +64,9 @@ class registration:
         curr = self.conn.cursor()
         curr.execute(
             """
-                        SELECT email_id FROM customer.cust_registration where email_id = email_ID and is_active = true
-                    """
+            SELECT email_id FROM customer.cust_registration where
+            email_id = email_ID and is_active = true
+            """
         )
         result = curr.fetchone()
 
