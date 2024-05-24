@@ -25,14 +25,14 @@ class CustomerEmail(BaseModel):
 
 @app.get("/")
 def read_root():
-    return {"Hello": "test app"}
+    return {"Hello": "ecom business app"}
 
 
 @app.post("/customer-registration")
 async def customer_registration(customerdetails: Customerdetails):
     cust_dict = customerdetails.dict()
     message = reg.insert_customer(cust_dict)
-    print(message)
+    # print(message)
     return message
 
 
@@ -40,5 +40,5 @@ async def customer_registration(customerdetails: Customerdetails):
 async def verify_registration(email: CustomerEmail):
     email_id = email.email_id
     message = reg.verify_registration(email_id)
-    print(message)
+    # print(message)
     return message
