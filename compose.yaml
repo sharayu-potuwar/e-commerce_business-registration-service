@@ -1,5 +1,5 @@
 services:
-  api:
+  ecom_app:
     build: .
     container_name: ecom_container
     environment:
