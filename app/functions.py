@@ -2,32 +2,22 @@ import logging
 import boto3
 import psycopg2
 from botocore.exceptions import ClientError
+from app.utils import secrets, sns, db_connection
+from app.config import config
 
+secret = secrets.Secret()
+sns = sns.Sns()
+db_connection = db_connection.DbConnection()
 
 class registration:
     # SAVE THE DB CONFIG IN A DICT OBJECT
     def __init__(self):
         self.logger = logging.getLogger(__name__)
-        self.DATABASE_CONFIG = {
-            "database": "ecommerce",
-            "user": "ecom_user",
-            "password": self.get_secret(),
-            "host": "e-commerce.c3m660qam72y.us-east-1.rds.amazonaws.com",
-            "port": 5432,
-        }
-
-        self.conn = psycopg2.connect(
-            dbname=self.DATABASE_CONFIG.get("database"),
-            user=self.DATABASE_CONFIG.get("user"),
-            password=self.DATABASE_CONFIG.get("password"),
-            host=self.DATABASE_CONFIG.get("host"),
-            port=self.DATABASE_CONFIG.get("port"),
-        )
-        self.client = boto3.client("sns", region_name="us-east-1")
 
     def insert_customer(self, dicobj):
         self.logger.info("insert_customer begin.. ")
-        curr = self.conn.cursor()
+        conn = db_connection.get_connection()
+        curr = conn.cursor()
 
         # EXECUTE THE INSERT QUERY
         curr.execute(
@@ -51,21 +41,21 @@ class registration:
             msg = "registration is successfull"
 
         # COMMIT THE ABOVE REQUESTS
-        self.conn.commit()
-
-        self.publish_to_sns(dicobj.get("email_id"))
+        conn.commit()
         # CLOSE THE CONNECTION
-        self.conn.close()
-
+        conn.close()
+        sns.publish_to_sns(topic_arn=config.SNS_TOPIC_ARN,message=msg)
         return msg
 
-    def verify_registration(self, email_ID):
+    def verify_registration(self, email_id):
         self.logger.info("verify_registration begin.. ")
-        curr = self.conn.cursor()
+        conn = db_connection.get_connection()
+        curr = conn.cursor()
+
         curr.execute(
-            """
+            f"""
             SELECT email_id FROM customer.cust_registration where
-            email_id = email_ID and is_active = true
+            email_id = '{email_id}' and is_active = true
             """
         )
         result = curr.fetchone()
@@ -75,40 +65,12 @@ class registration:
         else:
             msg = "User exist.You may login"
         # COMMIT THE ABOVE REQUESTS
-        self.conn.commit()
+        conn.commit()
 
         # CLOSE THE CONNECTION
-        self.conn.close()
+        conn.close()
 
         return msg
 
-    def publish_to_sns(self, email_ID):
-        self.logger.info("publish_to_sns begin.. ")
-        response = self.client.publish(
-            TopicArn="arn:aws:sns:us-east-1:211125373436:ecom-user-updates-topic",
-            Message="Test message",
-        )
-        print("Message published")
-        return response
-
-    def get_secret(self):
-
-        print("current role is:")
-        print(boto3.client("sts").get_caller_identity().get("Arn"))
-
-        secret_name = "dev_ecom_secretmanager"
-        region_name = "us-east-1"
-
-        # Create a Secrets Manager client
-        session = boto3.session.Session()
-        client = session.client(service_name="secretsmanager", region_name=region_name)
-
-        try:
-            get_secret_value_response = client.get_secret_value(SecretId=secret_name)
-        except ClientError as e:
-
-            raise e
-
-        secret = get_secret_value_response["SecretString"]
-
-        return secret
+    
+    
