@@ -1,0 +1,12 @@
+services:
+  api:
+    build: .
+    container_name: ecom_container
+    environment:
+      PORT: 8001
+      AWS_SHARED_CREDENTIALS_FILE: /code/.aws/credentials
+    ports:
+      - '8001:8001'
+    volumes:
+      - $HOME/.aws/credentials:/code/.aws/credentials:ro
+    restart: "no"
