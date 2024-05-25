@@ -55,7 +55,7 @@ class registration:
         curr.execute(
             f"""
             SELECT email_id FROM customer.cust_registration where
-            email_id = {email_id} and is_active = true
+            email_id = "{email_id}" and is_active = true
             """
         )
         result = curr.fetchone()
