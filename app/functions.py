@@ -1,13 +1,16 @@
 import logging
+
 import boto3
 import psycopg2
 from botocore.exceptions import ClientError
-from app.utils import secrets, sns, db_connection
+
 from app.config import config
+from app.utils import db_connection, secrets, sns
 
 secret = secrets.Secret()
 sns = sns.Sns()
 db_connection = db_connection.DbConnection()
+
 
 class registration:
     # SAVE THE DB CONFIG IN A DICT OBJECT
@@ -44,7 +47,7 @@ class registration:
         conn.commit()
         # CLOSE THE CONNECTION
         conn.close()
-        sns.publish_to_sns(topic_arn=config.SNS_TOPIC_ARN,message=msg)
+        sns.publish_to_sns(topic_arn=config.SNS_TOPIC_ARN, message=msg)
         return msg
 
     def verify_registration(self, email_id):
@@ -71,6 +74,3 @@ class registration:
         conn.close()
 
         return msg
-
-    
-    

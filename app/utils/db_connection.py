@@ -1,18 +1,19 @@
 import psycopg2
-from app.utils import secrets
+
 from app.config import config
+from app.utils import secrets
 
 
-class DbConnection():
+class DbConnection:
     def __init__(self):
         secret = secrets.Secret()
         self.DATABASE_CONFIG = {
-                    "database": "ecommerce",
-                    "user": "ecom_user",
-                    "password": secret.get_secret(secret_name=config.DB_SECRET_NAME),
-                    "host": config.DB_HOST,
-                    "port": 5432,
-                }
+            "database": "ecommerce",
+            "user": "ecom_user",
+            "password": secret.get_secret(secret_name=config.DB_SECRET_NAME),
+            "host": config.DB_HOST,
+            "port": 5432,
+        }
 
     def get_connection(self):
         conn = psycopg2.connect(
