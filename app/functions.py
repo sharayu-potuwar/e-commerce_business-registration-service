@@ -63,7 +63,7 @@ class registration:
         )
         result = curr.fetchone()
 
-        if not result[0]:
+        if result is None:
             msg = "User does not exist"
         else:
             msg = "User exist.You may login"
