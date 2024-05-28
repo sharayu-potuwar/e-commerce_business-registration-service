@@ -1,5 +1,5 @@
 import boto3
-
+import json
 
 class Sns:
     def __init__(self):
@@ -8,7 +8,7 @@ class Sns:
     def publish_to_sns(self, topic_arn, obj):
         response = self.client.publish(
             TopicArn=topic_arn,
-            Message=obj,
+            Message=json.dumps(obj),
         )
         return response
     
