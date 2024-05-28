@@ -42,12 +42,13 @@ class registration:
             msg = "registration failed"
         else:
             msg = "registration is successfull"
+            
+            sns.publish_to_sns(topic_arn=config.SNS_TOPIC_ARN, obj=dicobj)
 
         # COMMIT THE ABOVE REQUESTS
         conn.commit()
         # CLOSE THE CONNECTION
         conn.close()
-        sns.publish_to_sns(topic_arn=config.SNS_TOPIC_ARN, message=msg)
         return msg
 
     def verify_registration(self, email_id):
