@@ -13,6 +13,7 @@ This service has the following components:
 ## Repository structure
 
 Following is the structure of the repository :
+```bash
 .
 ├── Dockerfile
 ├── README.md
@@ -30,7 +31,7 @@ Following is the structure of the repository :
 ├── buildspec.yml
 ├── compose.yaml
 └── requirements.txt
-
+```
 
 ### app
 - This is the directory which hosts the real buiness logic of the application. 
@@ -44,13 +45,17 @@ Following is the structure of the repository :
 
 ### CICD
 - The application's deployment is fully automated with the CICD pipeline using:
-  - docker
-  - Amazon ECR
-  - AWS CodeBuild
-  - AWS CodePipeline
+  - docker - docker is used to build the image of the FastAPI application.
+  - Amazon ECR - Once the image is built, the latest version is pushed to the ECR repository. Amazon ECS then pulls the image from this repository for the deployment. This process takes place in the Codepipeline.
+  - AWS CodeBuild - This extracts the code from the GitHub repository when the pipeline is triggered. This also builds the image and publishes the image to ECR. The build process configuration is defined in [buildspec](https://github.com/sharayu-potuwar/e-commerce_business-registration-service/blob/main/buildspec.yml) file.
+  - AWS CodePipeline - Codepipeline orchestrates the build and deploy process. This triggers automatically when there is a PR merged onto the main branch of this repository.
   - GitHub Repository
 
+- CICD Pipeline Architecture - 
+
 ![Alt text](./docs/reg_service_cicd.jpg)
-  
+
+
+
 
 
